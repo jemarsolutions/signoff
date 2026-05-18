@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { CopyLinkButton } from "@/components/CopyLinkButton";
+import { ViewProofButton } from "@/components/ViewProofButton";
 
 interface JobRowProps {
   job: {
@@ -14,6 +15,7 @@ interface JobRowProps {
     job_description: string;
     status: "pending" | "completed";
     signature_photo_url: string | null;
+    delivery_photo_url: string | null;
     created_at: Date;
     signed_at: Date | null;
   };
@@ -71,18 +73,13 @@ export async function JobRow({ job }: JobRowProps) {
       <div className="mt-6 flex items-center gap-x-4 sm:mt-0 sm:flex-col sm:items-end gap-y-3">
         {isCompleted ? (
           <div className="flex items-center gap-3">
-            <div className="relative h-12 w-32 overflow-hidden rounded-lg border border-slate-700 bg-white/5 p-1">
-              {job.signature_photo_url ? (
-                <Image 
-                  src={job.signature_photo_url} 
-                  alt="Client Signature" 
-                  fill 
-                  className="object-contain p-1 invert" 
-                />
-              ) : (
-                <span className="flex h-full w-full items-center justify-center text-xs text-slate-500">No Image</span>
-              )}
-            </div>
+            <ViewProofButton
+              clientName={job.client_name}
+              jobDescription={job.job_description}
+              signaturePhotoUrl={job.signature_photo_url}
+              deliveryPhotoUrl={job.delivery_photo_url}
+              signedAt={job.signed_at}
+            />
             
             {/* Delete Button */}
             <form action={deleteJob}>
