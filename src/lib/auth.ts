@@ -1,50 +1,16 @@
 import { NextAuthOptions } from "next-auth";
-import EmailProvider from "next-auth/providers/email";
 import CredentialsProvider from "next-auth/providers/credentials";
 import PostgresAdapter from "@auth/pg-adapter";
-import { Resend } from "resend";
 import { db } from "@/db"; // points to src/db/index.ts
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 /**
  * NextAuth configuration using the Neon PostgreSQL adapter.
  * Environment variables required (add to .env.local):
  *   - NEXTAUTH_SECRET – secret for signing JWTs / cookies
- *   - RESEND_API_KEY  – from resend.com/api-keys
- *   - EMAIL_FROM      – e.g. "SignOff <noreply@yourdomain.com>"
- *                        (use "onboarding@resend.dev" for testing without a verified domain)
  *   - NEXTAUTH_URL    – your site URL (required for callbacks)
  */
 export const authOptions: NextAuthOptions = {
   providers: [
-    EmailProvider({
-      from: process.env.EMAIL_FROM ?? "onboarding@resend.dev",
-      async sendVerificationRequest({ identifier: email, url, provider }) {
-        const { error } = await resend.emails.send({
-          from: provider.from!,
-          to: email,
-          subject: "Sign in to SignOff",
-          html: `
-            <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#0f172a;border-radius:16px;color:#e2e8f0;">
-              <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
-                <div style="width:40px;height:40px;background:linear-gradient(135deg,#6366f1,#7c3aed);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:bold;color:white;">✓</div>
-                <span style="font-size:22px;font-weight:900;color:white;letter-spacing:-0.5px;">SignOff</span>
-              </div>
-              <h1 style="font-size:22px;font-weight:800;color:white;margin:0 0 8px;">Your sign-in link</h1>
-              <p style="color:#94a3b8;font-size:14px;line-height:1.6;margin:0 0 28px;">Click the button below to securely sign in to your SignOff account. This link expires in 24 hours.</p>
-              <a href="${url}" style="display:block;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:white;text-decoration:none;padding:14px 28px;border-radius:10px;font-weight:700;font-size:15px;text-align:center;margin-bottom:24px;">Sign In to SignOff →</a>
-              <p style="color:#475569;font-size:12px;text-align:center;margin:0;">If you didn't request this, you can safely ignore this email.</p>
-            </div>
-          `,
-        });
-
-        if (error) {
-          console.error("[Resend] Failed to send sign-in email:", error);
-          throw new Error("Failed to send verification email. Please try again.");
-        }
-      },
-    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -65,7 +31,6 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        // Import bcryptjs on the fly or normally. Let's make sure it's imported at the top.
         const bcrypt = require("bcryptjs");
         const isValid = await bcrypt.compare(credentials.password, user.password_hash);
         
