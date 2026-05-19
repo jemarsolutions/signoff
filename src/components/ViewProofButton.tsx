@@ -51,9 +51,11 @@ export function ViewProofButton({
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md px-4 animate-in fade-in duration-200">
           <div className="w-full max-w-2xl rounded-2xl border border-slate-800 bg-slate-950 p-6 sm:p-8 shadow-2xl relative overflow-hidden animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
-            {/* Background Glow */}
-            <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-indigo-500/10 blur-3xl" />
-            <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-violet-500/10 blur-3xl" />
+            {/* Background Glow Container (strictly clipped to prevent scrollbar triggering) */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-2xl">
+              <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-indigo-500/10 blur-3xl" />
+              <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-violet-500/10 blur-3xl" />
+            </div>
 
             <div className="relative">
               {/* Header */}
