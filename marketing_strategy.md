@@ -1,6 +1,6 @@
 # Marketing & Promotion Strategy: SignOff 🚀
 
-SignOff has a massive competitive advantage: **it is extremely simple, mobile-first, requires zero app installation for riders/clients, and has a very attractive, affordable price point ($15/mo).** 
+SignOff has a massive competitive advantage: **it is extremely simple, mobile-first, requires zero app installation for riders/clients, and has a very attractive, affordable price point (₱850/mo).** 
 
 To successfully promote SignOff and convert visitors into paying premium customers, you need to target the right audience with the right messaging.
 
@@ -14,7 +14,7 @@ Instead of targeting massive enterprise logistics companies (who use custom ERPs
 | :--- | :--- | :--- |
 | **Local E-Commerce & Shopify Sellers** | Customers claiming they "never received" their items (chargebacks). | Instant proof of delivery with photo and signature on the dashboard. |
 | **Home Services (Plumbers, Electricians, Cleaners)** | Property owners disputing whether a technician completed a job or did it correctly. | The technician takes a photo of the completed work and has the client sign on their phone. |
-| **Local Courier & Food Delivery Agencies** | Spending thousands on complex logistics suites like Bringg or OptimoRoute. | Simple, web-based sign-off for just $15/month for unlimited drivers. |
+| **Local Courier & Food Delivery Agencies** | Spending thousands on complex logistics suites like Bringg or OptimoRoute. | Simple, web-based sign-off for just ₱850/month for unlimited drivers. |
 | **High-Value Equipment Rental (Tents, Bouncy Castles, Tools)** | Disputes over the condition of equipment during drop-off and pick-up. | High-quality delivery photo proof showing the exact condition at drop-off. |
 
 ---
@@ -63,4 +63,4 @@ Most businesses need to send proof-of-delivery receipts to their clients or acco
 
 ### 3. Transition from "Free Tier Limit" to "14-Day Free Trial"
 Currently, users hit a hard wall after 5 jobs. 
-* **Better Approach:** Offer a **14-day free trial** of the Premium tier (which allows unlimited jobs and logo branding). Once they experience having their own custom logo on the client sign-off sheet for two weeks, they will gladly pay $15/mo to keep it.
+* **Better Approach:** Offer a **14-day free trial** of the Premium tier (which allows unlimited jobs and logo branding). Once they experience having their own custom logo on the client sign-off sheet for two weeks, they will gladly pay ₱850/mo to keep it.

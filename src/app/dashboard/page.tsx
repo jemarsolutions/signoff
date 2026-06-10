@@ -113,7 +113,7 @@ export default async function DashboardPage() {
                   <span className="text-2xl">🚀</span>
                   <h3 className="text-xl font-bold text-white">Upgrade to Premium</h3>
                   <span className="rounded-full bg-indigo-500/20 border border-indigo-400/30 px-2.5 py-0.5 text-xs font-bold text-indigo-300">
-                    $15/mo
+                    ₱850/mo
                   </span>
                 </div>
                 <p className="mt-2 text-sm text-indigo-200/90 max-w-2xl leading-relaxed">

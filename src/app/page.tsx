@@ -370,7 +370,7 @@ export default async function Home() {
                   Free
                 </span>
                 <div className="mt-3 flex items-baseline gap-1">
-                  <span className="text-5xl font-black text-white">$0</span>
+                  <span className="text-5xl font-black text-white">₱0</span>
                   <span className="text-slate-500">/mo</span>
                 </div>
                 <p className="text-slate-400 text-sm mt-2">
@@ -426,7 +426,7 @@ export default async function Home() {
                   Premium
                 </span>
                 <div className="mt-3 flex items-baseline gap-1">
-                  <span className="text-5xl font-black text-white">$15</span>
+                  <span className="text-5xl font-black text-white">₱850</span>
                   <span className="text-slate-400">/mo</span>
                 </div>
                 <p className="text-slate-400 text-sm mt-2">
