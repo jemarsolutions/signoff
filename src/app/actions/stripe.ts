@@ -35,8 +35,8 @@ export async function createCheckoutSession() {
       
       const price = await stripe.prices.create({
         product: product.id,
-        unit_amount: 1500, // $15.00
-        currency: "usd",
+        unit_amount: 85000, // ₱850.00
+        currency: "php",
         recurring: { interval: "month" },
       });
       

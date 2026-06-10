@@ -51,7 +51,7 @@ export function CreateJobButton({ limitReached }: CreateJobButtonProps) {
               <div className="flex flex-col gap-3">
                 <form action={createCheckoutSession} className="w-full">
                   <button type="submit" className="w-full h-12 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 font-bold text-white shadow-lg hover:from-indigo-400 hover:to-purple-500 transition-all">
-                    Upgrade to Premium — $15/mo
+                    Upgrade to Premium — ₱850/mo
                   </button>
                 </form>
                 <button
