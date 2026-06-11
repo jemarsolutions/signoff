@@ -80,8 +80,27 @@ const steps = [
 export default async function Home() {
   const session = await getServerSession(authOptions);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "SignOff",
+    operatingSystem: "Any",
+    applicationCategory: "BusinessApplication",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "PHP",
+    },
+    description: "Capture signatures, verify deliveries with photos, and store tamper-proof records.",
+    url: "https://signoff.click"
+  };
+
   return (
     <div className="relative min-h-screen bg-slate-950 font-sans text-slate-100 selection:bg-indigo-500/30 selection:text-indigo-200 overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Background */}
       <div className="fixed inset-0 -z-10 bg-[radial-gradient(ellipse_120%_80%_at_50%_-10%,#1e1b4b_0%,#020617_60%)]" />
       <div className="fixed top-0 left-1/4 -z-10 h-150 w-150 rounded-full bg-indigo-600/10 blur-[120px]" />
@@ -117,6 +136,9 @@ export default async function Home() {
             <a href="#pricing" className="hover:text-white transition-colors">
               Pricing
             </a>
+            <Link href="/blog" className="hover:text-white transition-colors">
+              Blog
+            </Link>
           </nav>
 
           {/* CTA */}
@@ -526,6 +548,9 @@ export default async function Home() {
               <a href="#pricing" className="hover:text-white transition-colors">
                 Pricing
               </a>
+              <Link href="/blog" className="hover:text-white transition-colors">
+                Blog
+              </Link>
               <Link
                 href="/auth/signin"
                 className="hover:text-white transition-colors"

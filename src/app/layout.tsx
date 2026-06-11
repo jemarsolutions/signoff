@@ -13,8 +13,25 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Proof-of-Delivery & Sign-off",
-  description: "High-performance, mobile-first B2B Proof-of-Delivery Platform",
+  metadataBase: new URL("https://signoff.click"),
+  title: {
+    default: "SignOff — Instant Proof of Delivery",
+    template: "%s | SignOff",
+  },
+  description: "High-performance, mobile-first B2B Proof-of-Delivery Platform. Capture signatures and photos instantly.",
+  openGraph: {
+    title: "SignOff — Instant Proof of Delivery",
+    description: "Capture signatures, verify deliveries with photos, and store tamper-proof records. The high-performance Proof-of-Delivery SaaS for modern logistics teams.",
+    url: "https://signoff.click",
+    siteName: "SignOff",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SignOff — Instant Proof of Delivery",
+    description: "The mobile-first Proof-of-Delivery SaaS for logistics teams. Capture signatures, snap delivery photos, and store tamper-proof records.",
+  },
 };
 
 export default function RootLayout({
