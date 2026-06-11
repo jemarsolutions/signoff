@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { getPostData, getSortedPostsData } from "@/lib/blog";
 import { notFound } from "next/navigation";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 
 export async function generateStaticParams() {
   const posts = getSortedPostsData();
@@ -40,21 +42,7 @@ export default async function Post({ params }: { params: Promise<{ slug: string 
       <div className="fixed top-0 right-1/4 -z-10 h-125 w-125 rounded-full bg-violet-600/10 blur-[100px]" />
 
       {/* Navbar */}
-      <header className="sticky top-0 z-50 border-b border-slate-900 bg-slate-950/80 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2 shrink-0">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-tr from-indigo-500 to-violet-500 font-bold text-white shadow-lg shadow-indigo-500/20 text-lg">
-              ✓
-            </span>
-            <span className="text-xl font-black tracking-tight bg-linear-to-r from-white to-indigo-300 bg-clip-text text-transparent">
-              SignOff
-            </span>
-          </Link>
-          <Link href="/blog" className="text-sm font-medium text-slate-400 hover:text-white transition-colors flex items-center gap-1">
-            ← Back to Blog
-          </Link>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* Article Layout — wide container with centered prose */}
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
@@ -142,15 +130,7 @@ export default async function Post({ params }: { params: Promise<{ slug: string 
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 py-8 mt-8">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-tr from-indigo-500 to-violet-500 font-bold text-white text-sm">✓</span>
-            <span className="font-black text-white">SignOff</span>
-          </Link>
-          <p className="text-xs text-slate-600">© {new Date().getFullYear()} SignOff. All rights reserved.</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

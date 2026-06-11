@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { getSortedPostsData } from "@/lib/blog";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 
 export const metadata = {
   title: "Blog",
@@ -17,29 +19,7 @@ export default function BlogIndex() {
       <div className="fixed top-0 right-1/4 -z-10 h-125 w-125 rounded-full bg-violet-600/10 blur-[100px]" />
 
       {/* Navbar */}
-      <header className="sticky top-0 z-50 border-b border-slate-900 bg-slate-950/80 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2 shrink-0">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-tr from-indigo-500 to-violet-500 font-bold text-white shadow-lg shadow-indigo-500/20 text-lg">
-              ✓
-            </span>
-            <span className="text-xl font-black tracking-tight bg-linear-to-r from-white to-indigo-300 bg-clip-text text-transparent">
-              SignOff
-            </span>
-          </Link>
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
-            <Link href="/#features" className="hover:text-white transition-colors">Features</Link>
-            <Link href="/#pricing" className="hover:text-white transition-colors">Pricing</Link>
-            <Link href="/blog" className="text-white font-semibold">Blog</Link>
-          </nav>
-          <Link
-            href="/auth/signin"
-            className="inline-flex h-9 items-center justify-center rounded-lg bg-indigo-600 px-4 text-sm font-semibold text-white hover:bg-indigo-500 transition-all hover:scale-[1.02] shadow-md active:scale-[0.98]"
-          >
-            Get Started Free
-          </Link>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* Hero Banner */}
       <section className="border-b border-slate-900 py-16">
@@ -112,15 +92,7 @@ export default function BlogIndex() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 py-8 mt-8">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-tr from-indigo-500 to-violet-500 font-bold text-white text-sm">✓</span>
-            <span className="font-black text-white">SignOff</span>
-          </Link>
-          <p className="text-xs text-slate-600">© {new Date().getFullYear()} SignOff. All rights reserved.</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
