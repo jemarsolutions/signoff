@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import { DemoAnimation } from "@/components/DemoAnimation";
 
 export const metadata = {
@@ -80,81 +82,34 @@ const steps = [
 export default async function Home() {
   const session = await getServerSession(authOptions);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "SignOff",
+    operatingSystem: "Any",
+    applicationCategory: "BusinessApplication",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "PHP",
+    },
+    description: "Capture signatures, verify deliveries with photos, and store tamper-proof records.",
+    url: "https://signoff.click"
+  };
+
   return (
     <div className="relative min-h-screen bg-slate-950 font-sans text-slate-100 selection:bg-indigo-500/30 selection:text-indigo-200 overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Background */}
       <div className="fixed inset-0 -z-10 bg-[radial-gradient(ellipse_120%_80%_at_50%_-10%,#1e1b4b_0%,#020617_60%)]" />
       <div className="fixed top-0 left-1/4 -z-10 h-150 w-150 rounded-full bg-indigo-600/10 blur-[120px]" />
       <div className="fixed top-0 right-1/4 -z-10 h-125 w-125 rounded-full bg-violet-600/10 blur-[100px]" />
 
       {/* ── NAVBAR ── */}
-      <header className="sticky top-0 z-50 border-b border-slate-900 bg-slate-950/80 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 shrink-0">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-tr from-indigo-500 to-violet-500 font-bold text-white shadow-lg shadow-indigo-500/20 text-lg">
-              ✓
-            </span>
-            <span className="text-xl font-black tracking-tight bg-linear-to-r from-white to-indigo-300 bg-clip-text text-transparent">
-              SignOff
-            </span>
-          </Link>
-
-          {/* Nav links */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
-            <a
-              href="#how-it-works"
-              className="hover:text-white transition-colors"
-            >
-              How It Works
-            </a>
-            <a href="#features" className="hover:text-white transition-colors">
-              Features
-            </a>
-            <a href="#demo" className="hover:text-white transition-colors">
-              Demo
-            </a>
-            <a href="#pricing" className="hover:text-white transition-colors">
-              Pricing
-            </a>
-          </nav>
-
-          {/* CTA */}
-          <div className="flex items-center gap-3">
-            {session?.user ? (
-              <>
-                <Link
-                  href="/api/auth/signout"
-                  className="text-sm font-medium text-slate-400 hover:text-rose-400 transition-colors hidden sm:block"
-                >
-                  Sign Out
-                </Link>
-                <Link
-                  href="/dashboard"
-                  className="inline-flex h-9 items-center justify-center rounded-lg bg-indigo-600 px-4 text-sm font-semibold text-white hover:bg-indigo-500 transition-all hover:scale-[1.02] shadow-md active:scale-[0.98]"
-                >
-                  Dashboard →
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/auth/signin"
-                  className="text-sm font-medium text-slate-400 hover:text-white transition-colors hidden sm:block"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  href="/auth/signin"
-                  className="inline-flex h-9 items-center justify-center rounded-lg bg-indigo-600 px-4 text-sm font-semibold text-white hover:bg-indigo-500 transition-all hover:scale-[1.02] shadow-md active:scale-[0.98]"
-                >
-                  Get Started Free
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* ── HERO ── */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-14 pb-20 lg:pt-16 lg:pb-24">
@@ -501,44 +456,7 @@ export default async function Home() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="border-t border-slate-900 py-12">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-tr from-indigo-500 to-violet-500 font-bold text-white text-sm">
-                ✓
-              </span>
-              <span className="font-black text-white">SignOff</span>
-            </div>
-            <nav className="flex flex-wrap items-center justify-center gap-6 text-sm text-slate-500">
-              <a
-                href="#how-it-works"
-                className="hover:text-white transition-colors"
-              >
-                How It Works
-              </a>
-              <a
-                href="#features"
-                className="hover:text-white transition-colors"
-              >
-                Features
-              </a>
-              <a href="#pricing" className="hover:text-white transition-colors">
-                Pricing
-              </a>
-              <Link
-                href="/auth/signin"
-                className="hover:text-white transition-colors"
-              >
-                Sign In
-              </Link>
-            </nav>
-            <p className="text-xs text-slate-600">
-              © {new Date().getFullYear()} SignOff. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
