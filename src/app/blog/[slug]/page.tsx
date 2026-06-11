@@ -64,7 +64,12 @@ export default async function Post({ params }: { params: Promise<{ slug: string 
                 <div className="h-8 w-8 rounded-full bg-linear-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-white font-bold">
                   {postData.author.charAt(0)}
                 </div>
-                <span className="font-medium text-slate-300">{postData.author}</span>
+                <div>
+                  <span className="font-medium text-slate-300 block">{postData.author}</span>
+                  {postData.role && (
+                    <span className="text-xs text-indigo-400">{postData.role}</span>
+                  )}
+                </div>
               </div>
               <span>•</span>
               <time>

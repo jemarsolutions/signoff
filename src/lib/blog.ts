@@ -10,6 +10,7 @@ export type BlogPost = {
   title: string;
   date: string;
   author: string;
+  role?: string;
   excerpt: string;
   content: string;
 };
@@ -39,7 +40,7 @@ export function getSortedPostsData(): Omit<BlogPost, 'content'>[] {
 
       return {
         slug,
-        ...(matterResult.data as { title: string; date: string; author: string; excerpt: string }),
+        ...(matterResult.data as { title: string; date: string; author: string; role?: string; excerpt: string }),
       };
     });
 

@@ -1,7 +1,8 @@
 ---
 title: 'How to Prevent Delivery Disputes with Difficult Clients in 2026'
 date: '2026-06-12'
-author: 'Alex Carter'
+author: 'Jemar Paltingca'
+role: 'Founder, SignOff'
 excerpt: 'Stop arguing over missing packages. Here is how modern logistics teams are using digital signatures and photo proof to eliminate delivery disputes entirely.'
 ---
 
