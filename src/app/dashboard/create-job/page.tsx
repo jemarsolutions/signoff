@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { SubmitButton } from "@/components/SubmitButton";
-import { createCheckoutSession } from "@/app/actions/stripe";
+import { requestGCashUpgrade } from "@/app/actions/gcash";
 
 export const metadata = {
   title: "Create Delivery Job | SignOff",
@@ -104,8 +104,8 @@ export default async function CreateJobPage() {
                 Back to Dashboard
               </Link>
               
-              <form action={createCheckoutSession}>
-                <button type="submit" className="inline-flex h-11 w-full sm:w-auto items-center justify-center rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 px-6 font-bold text-white shadow-lg hover:from-indigo-400 hover:to-purple-500 transition-all">
+              <form action={requestGCashUpgrade}>
+                <button type="submit" className="inline-flex h-11 w-full sm:w-auto items-center justify-center rounded-xl bg-linear-to-r from-indigo-500 to-purple-600 px-6 font-bold text-white shadow-lg hover:from-indigo-400 hover:to-purple-500 transition-all">
                   Upgrade to Premium
                 </button>
               </form>

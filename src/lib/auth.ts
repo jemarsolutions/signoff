@@ -22,7 +22,7 @@ export const authOptions: NextAuthOptions = {
         
         // Lookup the user by email including their password hash
         const result = await db.query(
-          `SELECT id, email, name, image, is_premium, password_hash FROM users WHERE email = $1`,
+          `SELECT id, email, name, image, is_premium, premium_until, password_hash FROM users WHERE email = $1`,
           [credentials.email.toLowerCase()]
         );
         const user = result.rows[0];
@@ -55,6 +55,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         (session.user as any).id = token.sub;
         (session.user as any).isPremium = token.isPremium ?? false;
+        (session.user as any).premiumUntil = token.premiumUntil ?? null;
         // Expose the freshly-fetched avatar from the DB into the session
         if (token.image !== undefined) {
           session.user.image = token.image as string | null;
@@ -72,11 +73,14 @@ export const authOptions: NextAuthOptions = {
       // their active browser session reflects it instantly without needing to log out.
       if (token.sub) {
         try {
-          // Fetch both premium status AND avatar so settings changes are instant
-          const result = await db.query(`SELECT is_premium, image FROM users WHERE id = $1`, [token.sub]);
+          // Fetch both premium status, expiry, and avatar so the session reflects the latest state.
+          const result = await db.query(`SELECT is_premium, premium_until, image FROM users WHERE id = $1`, [token.sub]);
           if (result.rows.length > 0) {
-            token.isPremium = result.rows[0].is_premium;
-            token.image = result.rows[0].image ?? null;
+            const row = result.rows[0];
+            const premiumUntil = row.premium_until ? new Date(row.premium_until) : null;
+            token.premiumUntil = premiumUntil?.toISOString() ?? null;
+            token.isPremium = premiumUntil !== null ? premiumUntil > new Date() : row.is_premium;
+            token.image = row.image ?? null;
           }
         } catch (err) {
           console.error("Failed to fetch fresh user status for JWT", err);

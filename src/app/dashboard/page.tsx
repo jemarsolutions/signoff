@@ -5,7 +5,8 @@ import { redirect } from "next/navigation";
 import { JobRow } from "@/components/JobRow";
 import { UserMenu } from "@/components/UserMenu";
 import { CreateJobButton } from "@/components/CreateJobButton";
-import { createCheckoutSession } from "@/app/actions/stripe";
+import { requestGCashUpgrade } from "@/app/actions/gcash";
+import { isAdminEmail } from "@/lib/admin";
 import Link from "next/link";
 
 export const metadata = {
@@ -20,7 +21,12 @@ export default async function DashboardPage() {
   }
 
   const userId = (session.user as any).id;
-  const isPremium = (session.user as any).isPremium;
+  const premiumUntilString = (session.user as any).premiumUntil as string | null;
+  const premiumUntil = premiumUntilString ? new Date(premiumUntilString) : null;
+  const isPremium = premiumUntil ? premiumUntil > new Date() : (session.user as any).isPremium;
+  const premiumDaysLeft = premiumUntil ? Math.max(0, Math.ceil((premiumUntil.getTime() - Date.now()) / 86400000)) : 0;
+  const isRenewalWindow = premiumUntil ? premiumDaysLeft <= 7 : false;
+  const isAdmin = isAdminEmail(session.user.email);
   const userName = session.user.name || session.user.email?.split("@")[0] || "User";
 
   // Fetch ONLY non-deleted jobs for the UI
@@ -53,7 +59,7 @@ export default async function DashboardPage() {
           </Link>
           <div className="flex items-center gap-4">
             {isPremium ? (
-              <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-3 py-1 text-xs font-bold text-indigo-300 border border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.1)]">
+              <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-linear-to-r from-indigo-500/10 to-purple-500/10 px-3 py-1 text-xs font-bold text-indigo-300 border border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.1)]">
                 <span className="text-amber-400 text-[10px]">👑</span> Premium
               </span>
             ) : (
@@ -61,6 +67,14 @@ export default async function DashboardPage() {
                 Free Plan
               </span>
             )}
+            {isAdmin ? (
+              <Link
+                href="/dashboard/admin/gcash-requests"
+                className="hidden sm:inline-flex items-center rounded-full border border-slate-700 bg-slate-900 px-3 py-1 text-xs font-semibold text-slate-200 hover:bg-slate-800 transition"
+              >
+                Admin Review
+              </Link>
+            ) : null}
             <UserMenu 
               userName={userName} 
               userImage={session.user.image || null} 
@@ -103,10 +117,28 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        {/* Upgrade Banner (Visible only for non-premium users) */}
-        {!isPremium && (
-          <div className="mb-12 overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-900/40 to-violet-900/40 border border-indigo-500/20 relative shadow-xl">
-            <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-600 opacity-20 blur-xl"></div>
+        {isPremium && premiumUntil ? (
+          <div className="mb-12 rounded-2xl border border-emerald-500/20 bg-emerald-900/10 p-6 shadow-xl">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-300/80">Premium Status</p>
+                <h2 className="mt-2 text-2xl font-black text-white">Premium active until {premiumUntil.toLocaleDateString("en-PH", { year: "numeric", month: "long", day: "numeric" })}</h2>
+                <p className="mt-2 text-sm text-emerald-200/80">
+                  {premiumDaysLeft > 0 ? `${premiumDaysLeft} day${premiumDaysLeft === 1 ? "" : "s"} left` : "Expires today"}.
+                </p>
+              </div>
+              {isRenewalWindow ? (
+                <form action={requestGCashUpgrade} className="w-full sm:w-auto">
+                  <button type="submit" className="inline-flex h-12 rounded-xl bg-white px-7 text-sm font-black text-indigo-950 shadow-lg hover:bg-indigo-50 transition-all w-full sm:w-auto">
+                    Renew in advance
+                  </button>
+                </form>
+              ) : null}
+            </div>
+          </div>
+        ) : (
+          <div className="mb-12 overflow-hidden rounded-2xl bg-linear-to-r from-indigo-900/40 to-violet-900/40 border border-indigo-500/20 relative shadow-xl">
+            <div className="absolute -inset-1 bg-linear-to-r from-indigo-500 to-purple-600 opacity-20 blur-xl"></div>
             <div className="relative p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 backdrop-blur-sm">
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
@@ -126,7 +158,7 @@ export default async function DashboardPage() {
                 </ul>
               </div>
               
-              <form action={createCheckoutSession} className="w-full lg:w-auto">
+              <form action={requestGCashUpgrade} className="w-full lg:w-auto">
                 <button type="submit" className="whitespace-nowrap rounded-xl bg-white text-indigo-950 px-8 py-3.5 text-sm font-black shadow-lg hover:bg-indigo-50 hover:scale-[1.02] active:scale-[0.98] transition-all w-full lg:w-auto">
                   Subscribe Now
                 </button>

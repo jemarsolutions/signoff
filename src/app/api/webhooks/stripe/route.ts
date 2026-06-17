@@ -40,22 +40,20 @@ export async function POST(req: NextRequest) {
         const userId = session.client_reference_id || session.metadata?.userId;
 
         if (userId) {
-          // 1. Grant premium status to the user
-          await db.query(
-            `UPDATE users SET is_premium = true WHERE id = $1`,
-            [userId]
-          );
-
-          // 2. If it's a subscription (not a one-time payment), track it in the subscriptions table
           if (session.subscription) {
-            const subscriptionId = typeof session.subscription === "string" 
-              ? session.subscription 
+            const subscriptionId = typeof session.subscription === "string"
+              ? session.subscription
               : session.subscription.id;
-              
+
             // Fetch subscription details to capture the renewal period and price
             const subscription = await stripe.subscriptions.retrieve(subscriptionId);
             const priceId = subscription.items.data[0]?.price.id;
             const currentPeriodEnd = new Date(subscription.items.data[0].current_period_end * 1000);
+
+            await db.query(
+              `UPDATE users SET is_premium = true, premium_until = $2 WHERE id = $1`,
+              [userId, currentPeriodEnd]
+            );
 
             await db.query(
               `INSERT INTO subscriptions (id, user_id, status, price_id, current_period_end)
@@ -65,6 +63,11 @@ export async function POST(req: NextRequest) {
                price_id = EXCLUDED.price_id,
                current_period_end = EXCLUDED.current_period_end`,
               [subscriptionId, userId, subscription.status, priceId, currentPeriodEnd]
+            );
+          } else {
+            await db.query(
+              `UPDATE users SET is_premium = true, premium_until = current_timestamp + interval '1 month' WHERE id = $1`,
+              [userId]
             );
           }
         } else {
@@ -93,16 +96,15 @@ export async function POST(req: NextRequest) {
         const updatedRow = result.rows[0];
         
         if (updatedRow) {
-          // If the subscription is no longer active, revoke premium access
-          if (subscription.status === 'canceled' || subscription.status === 'unpaid' || subscription.status === 'past_due') {
+          if (subscription.status === 'active') {
             await db.query(
-              `UPDATE users SET is_premium = false WHERE id = $1`,
-              [updatedRow.user_id]
+              `UPDATE users SET is_premium = true, premium_until = $2 WHERE id = $1`,
+              [updatedRow.user_id, currentPeriodEnd]
             );
-          } else if (subscription.status === 'active') {
+          } else {
             await db.query(
-              `UPDATE users SET is_premium = true WHERE id = $1`,
-              [updatedRow.user_id]
+              `UPDATE users SET is_premium = false, premium_until = $2 WHERE id = $1`,
+              [updatedRow.user_id, currentPeriodEnd]
             );
           }
         }
