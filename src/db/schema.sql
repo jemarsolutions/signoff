@@ -8,6 +8,7 @@ create table users (
   company_logo text,
   business_name text,
   is_premium boolean default false,
+  premium_until timestamp,
   password_hash text,
   created_at timestamp default current_timestamp not null
 );
@@ -64,4 +65,14 @@ create table subscriptions (
   status text,
   price_id text,
   current_period_end timestamp
+);
+
+create table gcash_payment_requests (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references users(id) on delete cascade not null,
+  amount_cents integer not null,
+  status text default 'pending' check (status in ('pending', 'awaiting_verification', 'confirmed', 'rejected')),
+  requested_at timestamp default current_timestamp not null,
+  confirmed_at timestamp,
+  unique (user_id)
 );

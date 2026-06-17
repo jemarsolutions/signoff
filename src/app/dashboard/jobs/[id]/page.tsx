@@ -61,10 +61,12 @@ export default async function JobSignOffPage({ params }: { params: Promise<{ id:
   }
 
   const userResult = await db.query(
-    `SELECT business_name, company_logo, is_premium FROM users WHERE id = $1`,
+    `SELECT business_name, company_logo, is_premium, premium_until FROM users WHERE id = $1`,
     [job.user_id]
   );
-  const businessOwner = userResult.rows[0] || { is_premium: false };
+  const businessOwner = userResult.rows[0] || { is_premium: false, premium_until: null };
+  const businessPremiumUntil = businessOwner.premium_until ? new Date(businessOwner.premium_until) : null;
+  const businessHasPremium = businessOwner.is_premium || (businessPremiumUntil ? businessPremiumUntil > new Date() : false);
 
   return (
     <div className="min-h-screen bg-slate-950 font-sans text-slate-100 pb-12 sm:pb-0">
@@ -86,7 +88,7 @@ export default async function JobSignOffPage({ params }: { params: Promise<{ id:
       </div>
 
       {/* Custom Branding Header */}
-      {businessOwner.is_premium && (businessOwner.business_name || businessOwner.company_logo) ? (
+      {businessHasPremium && (businessOwner.business_name || businessOwner.company_logo) ? (
         <div className="flex flex-col items-center justify-center py-8 gap-3 border-b border-slate-900 bg-slate-900/20 px-4">
           {businessOwner.company_logo && (
             <div className="relative h-16 w-48">
@@ -178,7 +180,7 @@ export default async function JobSignOffPage({ params }: { params: Promise<{ id:
       </main>
 
       {/* Powered by SignOff Watermark (Free Tier Only) */}
-      {!businessOwner.is_premium && (
+      {!businessHasPremium && (
         <div className="mt-12 mb-8 flex justify-center opacity-40 hover:opacity-80 transition-opacity">
           <Link href="/" className="flex items-center gap-1.5 text-xs font-semibold text-slate-400">
             <span>Powered by</span>
