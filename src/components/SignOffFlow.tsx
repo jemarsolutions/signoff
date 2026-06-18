@@ -47,7 +47,7 @@ export function SignOffFlow({ jobId, onComplete }: SignOffFlowProps) {
                 allowedContent: "text-slate-500 text-xs mt-2"
               }}
               onClientUploadComplete={(res) => {
-                if (res?.[0]) setPhotoUrl(res[0].ufsUrl);
+                if (res?.[0]) setPhotoUrl(res[0].url);
               }}
               onUploadError={(error: Error) => {
                 alert(`Upload failed: ${error.message}`);
