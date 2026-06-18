@@ -10,8 +10,8 @@ export const ourFileRouter = {
       return { uploadedBy: "anonymous_driver" };
     })
     .onUploadComplete(async ({ file }) => {
-      console.log("Delivery photo uploaded. File URL:", file.ufsUrl);
-      return { url: file.ufsUrl };
+      console.log("Delivery photo uploaded. File URL:", file.url);
+      return { url: file.url };
     }),
 
   // Endpoint for the drawn signature canvas
@@ -21,8 +21,8 @@ export const ourFileRouter = {
       return { uploadedBy: "anonymous_client" };
     })
     .onUploadComplete(async ({ file }) => {
-      console.log("Signature uploaded. File URL:", file.ufsUrl);
-      return { url: file.ufsUrl };
+      console.log("Signature uploaded. File URL:", file.url);
+      return { url: file.url };
     }),
 
   // Endpoint for personal avatar (Free & Premium)
@@ -31,8 +31,8 @@ export const ourFileRouter = {
       return { uploadedBy: "dashboard_user" };
     })
     .onUploadComplete(async ({ file }) => {
-      console.log("Avatar uploaded. File URL:", file.ufsUrl);
-      return { url: file.ufsUrl };
+      console.log("Avatar uploaded. File URL:", file.url);
+      return { url: file.url };
     }),
 
   // Endpoint for the premium custom branding logo
@@ -43,8 +43,8 @@ export const ourFileRouter = {
       return { uploadedBy: "dashboard_user" };
     })
     .onUploadComplete(async ({ file }) => {
-      console.log("Company logo uploaded. File URL:", file.ufsUrl);
-      return { url: file.ufsUrl };
+      console.log("Company logo uploaded. File URL:", file.url);
+      return { url: file.url };
     }),
 } satisfies FileRouter;
 
