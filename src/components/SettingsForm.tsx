@@ -58,7 +58,7 @@ export function SettingsForm({ initialBusinessName, initialLogoUrl, initialAvata
                   onClientUploadComplete={(res) => {
                     if (res && res[0]) {
                       const input = document.getElementById("avatarUrlInput") as HTMLInputElement;
-                      if (input) input.value = res[0].ufsUrl;
+                      if (input) input.value = res[0].url;
                       alert("Avatar uploaded! Click Save Settings at the bottom.");
                     }
                   }}
@@ -133,7 +133,7 @@ export function SettingsForm({ initialBusinessName, initialLogoUrl, initialAvata
                     onClientUploadComplete={(res) => {
                       if (res && res[0]) {
                         const input = document.getElementById("logoUrlInput") as HTMLInputElement;
-                        if (input) input.value = res[0].ufsUrl;
+                        if (input) input.value = res[0].url;
                         alert("Company logo uploaded! Click Save Settings.");
                       }
                     }}
